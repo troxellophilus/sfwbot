@@ -6,7 +6,10 @@ import imghdr
 import logging
 import mimetypes
 import os
+import shutil
 import sys
+import tempfile
+from typing import BinaryIO
 
 import praw
 import requests
@@ -42,6 +45,11 @@ def download_image(url, filename):
         raise ValueError("Header of file '{}' is not an image.".format(filename))
 
 
+def store_file(file_obj: BinaryIO, out_path: str):
+    with open(out_path, 'wb') as out_fo:
+        shutil.copyfileobj(file_obj, out_fo)
+
+
 def _root_join(*args):
     _root = os.path.abspath(os.path.dirname(__file__))
     return os.path.join(_root, *args)
@@ -56,35 +64,41 @@ def load_config():
     if hasattr(load_config, 'conf'):
         return load_config.conf
     conf = configparser.ConfigParser()
-    config_file = _cwd_join('nsfwdetectbot.ini')
+    config_file = _cwd_join('sfwbot.ini')
     conf.read(config_file)
     load_config.conf = conf
 
     return load_config.conf
 
 
-_PRAW_BOT = "nsfwdetectbot"
+_PRAW_BOT = "sfwbot"
 
 
 def main():
     logging.basicConfig(level=logging.INFO)
 
     conf = load_config()
-    target_subreddit = conf['nsfwdetectbot']['subreddit']
-    submission_limit = int(conf['nsfwdetectbot']['submission_limit'])
-    work_dir = conf['nsfwdetectbot']['work_dir']
+    target_subreddit = conf['sfwbot']['subreddit']
+    submission_limit = int(conf['sfwbot']['submission_limit'])
+    out_loc = conf['sfwbot']['temp_location']
 
     reddit = praw.Reddit(_PRAW_BOT)
 
     submissions = reddit.subreddit(target_subreddit).new(limit=submission_limit)
 
-    for submission in submissions:
-        try:
-            out_file = os.path.join(work_dir, submission.fullname)
-            download_image(submission.url, out_file)
-            logging.info("Downloaded image from submission '{}'.".format(submission.fullname))
-        except ValueError as err:
-            logging.info("Skipped submission '{}': {}".format(submission.fullname, err))
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        for submission in submissions:
+            try:
+                out_file = os.path.join(tmp_dir, submission.fullname)
+                download_image(submission.url, out_file)
+                logging.info("Downloaded image from submission '{}'.".format(submission.fullname))
+            except ValueError as err:
+                logging.info("Skipped submission '{}': {}".format(submission.fullname, err))
+        for file_name in os.listdir(tmp_dir):
+            file_path = os.path.join(tmp_dir, file_name)
+            with open(file_path, 'rb') as in_fo:
+                out_path = os.path.join(out_loc, os.path.basename(file_path))
+                store_file(in_fo, out_path)
 
 
 if __name__ == '__main__':

@@ -18,10 +18,10 @@
     "default": {
         "certifi": {
             "hashes": [
-                "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7",
-                "sha256:9fa520c1bacfb634fa7af20a76bcbd3d5fb390481724c597da32c719a7dca4b0"
+                "sha256:376690d6f16d32f9d1fe8932551d80b23e9d393a8578c5633a2ed39a64861638",
+                "sha256:456048c7e371c089d0a77a5212fb37a2c2dce1e24146e3b7e0261736aaeaa22a"
             ],
-            "version": "==2018.4.16"
+            "version": "==2018.8.24"
         },
         "chardet": {
             "hashes": [
@@ -39,18 +39,18 @@
         },
         "praw": {
             "hashes": [
-                "sha256:04dc118381383dc5d2ae7a16e23d074fb42abe49659a9777828c062fc90780b7",
-                "sha256:e4196a2ec10b758785e293d2cf6f25c5f97c8021b9314fd81797492815639cbd"
+                "sha256:ccd3463c838d912073c82cc226f7d62fb01aecf2f33dff3f0456afc688f45376",
+                "sha256:ead6a4cce623f9a5093965a98e4f4bb5463920c8e4a5caf19098c585d06bb507"
             ],
             "index": "pypi",
-            "version": "==5.4.0"
+            "version": "==6.0.0"
         },
         "prawcore": {
             "hashes": [
-                "sha256:a8b6fda0d1f8f3135e888e4257a4e338e9866c39262031cd5a8cb91f9024f64b",
-                "sha256:cc5c32ee8c1d1de212ade0ea319a21d3448cb151cb1ccb7335ba76ca96cf8f37"
+                "sha256:00bb9d61b5653a4614dce22eabe312e565aac08619d23a961bdcaf32367ed69a",
+                "sha256:a9e84be5c58daf62dc5f8f11563bf63484066d0f6e60a07be33678a8ccab804b"
             ],
-            "version": "==0.14.0"
+            "version": "==1.0.0"
         },
         "requests": {
             "hashes": [
@@ -79,10 +79,10 @@
     "develop": {
         "astroid": {
             "hashes": [
-                "sha256:8704779744963d56a2625ec2949eb150bd499fc099510161ddbb2b64e2d98138",
-                "sha256:add3fd690e7c1fe92436d17be461feeaa173e6f33e0789734310334da0f30027"
+                "sha256:292fa429e69d60e4161e7612cb7cc8fa3609e2e309f80c224d93a76d5e7b58be",
+                "sha256:c7013d119ec95eb626f7a2011f0b63d0c9a095df9ad06d8507b37084eada1a8d"
             ],
-            "version": "==2.0"
+            "version": "==2.0.4"
         },
         "colorama": {
             "hashes": [
@@ -144,11 +144,11 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:248a7b19138b22e6390cba71adc0cb03ac6dd75a25d3544f03ea1728fa20e8f4",
-                "sha256:9cd70527ef3b099543eeabeb5c80ff325d86b477aa2b3d49e264e12d12153bc8"
+                "sha256:1d6d3622c94b4887115fe5204982eee66fdd8a951cf98635ee5caee6ec98c3ec",
+                "sha256:31142f764d2a7cd41df5196f9933b12b7ee55e73ef12204b648ad7e556c119fb"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.1.1"
         },
         "pyreadline": {
             "hashes": [
