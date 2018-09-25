@@ -9,6 +9,6 @@ COPY Pipfile Pipfile.lock ${WORKDIR}/
 WORKDIR ${WORKDIR}
 RUN pipenv install --system --deploy
 
-COPY image_download.py ${WORKDIR}/
+COPY quarantine.py ${WORKDIR}/
 
-ENTRYPOINT [ "python", "image_download.py" ]
+ENTRYPOINT [ "python", "quarantine.py" ]

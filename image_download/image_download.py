@@ -15,6 +15,14 @@ import praw
 import requests
 
 
+def _parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--submission-limit", type=int, help="Maximum number of new submissions to check in a batch.")
+    parser.add_argument("subreddit", help="Subreddit to download images from.")
+    parser.add_argument("image_dir", help="Path to a directory to hold image files.")
+    return parser.parse_args()
+
+
 def download_image(url, filename):
     """Download an image from a URL to a filename.
 
@@ -50,25 +58,10 @@ def store_file(file_obj: BinaryIO, out_path: str):
         shutil.copyfileobj(file_obj, out_fo)
 
 
-def _root_join(*args):
-    _root = os.path.abspath(os.path.dirname(__file__))
-    return os.path.join(_root, *args)
-
-
-def _cwd_join(*args):
-    _cwd = os.path.abspath(os.getcwd())
-    return os.path.join(_cwd, *args)
-
-
-def load_config():
-    if hasattr(load_config, 'conf'):
-        return load_config.conf
+def read_config(file_path):
     conf = configparser.ConfigParser()
-    config_file = _cwd_join('sfwbot.ini')
-    conf.read(config_file)
-    load_config.conf = conf
-
-    return load_config.conf
+    conf.read(file_path)
+    return conf
 
 
 _PRAW_BOT = "sfwbot"
@@ -77,10 +70,10 @@ _PRAW_BOT = "sfwbot"
 def main():
     logging.basicConfig(level=logging.INFO)
 
-    conf = load_config()
-    target_subreddit = conf['sfwbot']['subreddit']
-    submission_limit = int(conf['sfwbot']['submission_limit'])
-    out_loc = conf['sfwbot']['temp_location']
+    args = _parse_args()
+    target_subreddit = args.subreddit
+    submission_limit = args.submission_limit
+    out_loc = args.image_dir
 
     reddit = praw.Reddit(_PRAW_BOT)
 

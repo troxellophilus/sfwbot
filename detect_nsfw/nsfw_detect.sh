@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-IMAGE_DIR="${2:?"Need image directory argument."}"
+IMAGE_DIR="${1:?"Need image directory argument."}"
 
-for filepath in ${image_dir}/*; do
+for filepath in ${IMAGE_DIR}/*; do
     [[ ${filepath} == *.result ]] && continue
     python ./open_nsfw/classify_nsfw.py \
         --model_def ./open_nsfw/nsfw_model/deploy.prototxt \

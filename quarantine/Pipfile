@@ -5,11 +5,10 @@ name = "pypi"
 
 [packages]
 praw = "*"
-requests = "*"
 
 [dev-packages]
-pylint = "*"
 pyreadline = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.7"
