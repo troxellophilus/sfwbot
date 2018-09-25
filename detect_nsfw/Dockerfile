@@ -1,10 +1,10 @@
 FROM bvlc/caffe:cpu
 
-ENV WORKDIR = "/sfwbot"
+ENV SRC_DIR "/detect_nsfw"
 
-COPY nsfw_detect.sh ${WORKDIR}/
-COPY open_nsfw ${WORKDIR}/open_nsfw
+COPY nsfw_detect.sh ${SRC_DIR}/
+COPY open_nsfw ${SRC_DIR}/open_nsfw
 
-WORKDIR ${WORKDIR}
+WORKDIR ${SRC_DIR}
 
-ENTRYPOINT [ "./nsfw_detect.sh" ]
+ENTRYPOINT [ "/detect_nsfw/nsfw_detect.sh" ]

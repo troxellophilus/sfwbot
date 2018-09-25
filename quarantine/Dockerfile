@@ -2,13 +2,16 @@ FROM python:3.7-slim-stretch
 
 RUN pip install pipenv
 
-ENV WORKDIR = "/sfwbot"
+ENV SRC_DIR "/quarantine"
+ENV WORK_DIR "/sfwbot"
 
-COPY Pipfile Pipfile.lock ${WORKDIR}/
+COPY Pipfile Pipfile.lock ${SRC_DIR}/
 
-WORKDIR ${WORKDIR}
+WORKDIR ${SRC_DIR}
 RUN pipenv install --system --deploy
 
-COPY quarantine.py ${WORKDIR}/
+COPY quarantine.py ${SRC_DIR}/
 
-ENTRYPOINT [ "python", "quarantine.py" ]
+WORKDIR ${WORK_DIR}
+
+ENTRYPOINT [ "python", "/quarantine/quarantine.py" ]

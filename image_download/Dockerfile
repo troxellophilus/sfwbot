@@ -2,13 +2,16 @@ FROM python:3.7-slim-stretch
 
 RUN pip install pipenv
 
-ENV WORKDIR = "/sfwbot"
+ENV SRC_DIR "/image_download"
+ENV WORK_DIR "/sfwbot"
 
-COPY Pipfile Pipfile.lock ${WORKDIR}/
+COPY Pipfile Pipfile.lock ${SRC_DIR}/
 
-WORKDIR ${WORKDIR}
+WORKDIR ${SRC_DIR}
 RUN pipenv install --system --deploy
 
-COPY image_download.py ${WORKDIR}/
+COPY image_download.py ${SRC_DIR}/
 
-ENTRYPOINT [ "python", "image_download.py" ]
+WORKDIR ${WORK_DIR}
+
+ENTRYPOINT [ "python", "/image_download/image_download.py" ]

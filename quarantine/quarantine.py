@@ -1,5 +1,6 @@
 import argparse
 import configparser
+import glob
 import logging
 import os
 
@@ -32,7 +33,7 @@ def main():
 
     result_glob = os.path.join(proc_dir, '*.result')
     val_idx = len('NSFW score:   ')
-    for file_path in result_glob:
+    for file_path in glob.glob(result_glob):
         with open(file_path) as in_fo:
             result = in_fo.read()  # type: str
         nsfw_prob = float(result[val_idx:])
@@ -57,6 +58,8 @@ def main():
                 '\n'.join(f'* {pl}' for pl in permalinks)
             )
             subreddit.message('SFWBot Quarantine Alert', message)
+    else:
+        logging.info("Did not find any NSFW submissions to quarantine.")
 
 
 if __name__ == '__main__':

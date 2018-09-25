@@ -17,7 +17,7 @@ import requests
 
 def _parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--submission-limit", type=int, help="Maximum number of new submissions to check in a batch.")
+    parser.add_argument("--submission-limit", type=int, default=10, help="Maximum number of new submissions to check in a batch.")
     parser.add_argument("subreddit", help="Subreddit to download images from.")
     parser.add_argument("image_dir", help="Path to a directory to hold image files.")
     return parser.parse_args()
