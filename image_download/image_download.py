@@ -3,6 +3,7 @@
 import argparse
 import configparser
 import imghdr
+import json
 import logging
 import mimetypes
 import os
@@ -65,6 +66,8 @@ def read_config(file_path):
 
 
 _PRAW_BOT = "sfwbot"
+_QUARANTINE_LIST = "quarantine.json"
+_SAFE_LIST = "safe.json"
 
 
 def main():
@@ -75,12 +78,20 @@ def main():
     submission_limit = args.submission_limit
     out_loc = args.image_dir
 
+    with open(_QUARANTINE_LIST) as in_fo:
+        quarantine = json.load(in_fo)
+    with open(_SAFE_LIST) as in_fo:
+        safe = json.load(in_fo)
+
     reddit = praw.Reddit(_PRAW_BOT)
 
     submissions = reddit.subreddit(target_subreddit).new(limit=submission_limit)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         for submission in submissions:
+            if submission.fullname in quarantine or submission.fullname in safe:
+                logging.info("Already processed {}, skipping.".format(submission.fullname))
+                continue
             try:
                 out_file = os.path.join(tmp_dir, submission.fullname)
                 download_image(submission.url, out_file)

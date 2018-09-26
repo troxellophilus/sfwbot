@@ -18,6 +18,7 @@ def _parse_args():
 
 _PRAW_BOT = "sfwbot"
 _QUARANTINE_LIST = "quarantine.json"
+_SAFE_LIST = "safe.json"
 
 
 def main():
@@ -33,18 +34,25 @@ def main():
 
     with open(_QUARANTINE_LIST) as in_fo:
         already_quarantined = json.load(in_fo)
+    with open(_SAFE_LIST) as in_fo:
+        already_safe = json.load(in_fo)
     quarantine = []
+    safe = []
 
     result_glob = os.path.join(proc_dir, '*.result')
     val_idx = len('NSFW score:   ')
     for file_path in glob.glob(result_glob):
+        fullname = os.path.splitext(os.path.basename(file_path))[0]
+        if fullname in already_quarantined or fullname in already_safe:
+            logging.info(f"Already processed '{fullname}', skipping.")
+            continue
         with open(file_path) as in_fo:
             result = in_fo.read()  # type: str
         nsfw_prob = float(result[val_idx:])
         if nsfw_prob > nsfw_threshold:
-            fullname = os.path.splitext(os.path.basename(file_path))[0]
-            if not fullname in already_quarantined:
-                quarantine.append(fullname)
+            quarantine.append(fullname)
+        else:
+            safe.append(fullname)
 
     if quarantine:
         permalinks = []
@@ -67,6 +75,10 @@ def main():
             json.dump(already_quarantined + quarantine, out_fo)
     else:
         logging.info("Did not find any NSFW submissions to quarantine.")
+
+    if safe:
+        with open(_SAFE_LIST, 'w') as out_fo:
+            json.dump(already_safe + safe, out_fo)
 
 
 if __name__ == '__main__':
