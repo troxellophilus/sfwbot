@@ -7,4 +7,4 @@ COPY open_nsfw ${SRC_DIR}/open_nsfw
 
 WORKDIR ${SRC_DIR}
 
-ENTRYPOINT [ "/detect_nsfw/nsfw_detect.sh" ]
+ENTRYPOINT [ "/usr/bin/env", "bash", "/detect_nsfw/nsfw_detect.sh" ]
