@@ -63,6 +63,8 @@ def main():
                 '\n'.join(f'* {pl}' for pl in permalinks)
             )
             subreddit.message('SFWBot Quarantine Alert', message)
+        with open(_QUARANTINE_LIST, 'w') as out_fo:
+            json.dump(already_quarantined + quarantine, out_fo)
     else:
         logging.info("Did not find any NSFW submissions to quarantine.")
 
