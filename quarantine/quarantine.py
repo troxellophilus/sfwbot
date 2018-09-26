@@ -1,6 +1,7 @@
 import argparse
 import configparser
 import glob
+import json
 import logging
 import os
 
@@ -16,6 +17,7 @@ def _parse_args():
 
 
 _PRAW_BOT = "sfwbot"
+_QUARANTINE_LIST = "quarantine.json"
 
 
 def main():
@@ -29,6 +31,8 @@ def main():
     reddit = praw.Reddit(_PRAW_BOT)
     subreddit = reddit.subreddit(subreddit_id)
 
+    with open(_QUARANTINE_LIST) as in_fo:
+        already_quarantined = json.load(in_fo)
     quarantine = []
 
     result_glob = os.path.join(proc_dir, '*.result')
@@ -39,7 +43,8 @@ def main():
         nsfw_prob = float(result[val_idx:])
         if nsfw_prob > nsfw_threshold:
             fullname = os.path.splitext(os.path.basename(file_path))[0]
-            quarantine.append(fullname)
+            if not fullname in already_quarantined:
+                quarantine.append(fullname)
 
     if quarantine:
         permalinks = []
