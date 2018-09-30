@@ -8,5 +8,6 @@ for filepath in ${IMAGE_DIR}/*; do
         --model_def ./open_nsfw/nsfw_model/deploy.prototxt \
         --pretrained_model ./open_nsfw/nsfw_model/resnet_50_1by2_nsfw.caffemodel \
         "${filepath}" \
-        > "${filepath}.result"
+        2> /dev/null \
+        1> "${filepath}.result"
 done
