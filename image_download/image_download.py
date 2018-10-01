@@ -11,6 +11,7 @@ import shutil
 import sys
 import tempfile
 from typing import BinaryIO
+import urllib.parse
 
 import praw
 import requests
@@ -41,7 +42,8 @@ def download_image(url, filename):
     if not url:
         raise ValueError("url required.")
     if 'imgur' in url:
-        url = "{}.jpg".format(url)
+        parsed = urllib.parse.urlparse(url)
+        url = "i.{}/{}.jpg".format(parsed.netloc, parsed.path)
     mime_type, _ = mimetypes.guess_type(url)
     if not (mime_type and 'image' in mime_type):
         raise ValueError("Mime type of url '{}' is not an image.".format(url))
